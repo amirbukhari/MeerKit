@@ -10,9 +10,6 @@
   --color-accent: #f2a03d;          /* 8.9:1 on background */
   --color-on-accent: #201405;       /* 8.5:1 on accent */
   --color-accent-soft: rgba(242, 160, 61, 0.14);
-  --mk-fur: #d9a867;
-  --mk-belly: #f0d9b5;
-  --mk-dark: #4a3222;
   --radius: 12px;
   --topbar-h: 56px;
   --dur: 200ms;
@@ -98,7 +95,12 @@ body { display: flex; flex-direction: column; }
   flex: 0 0 auto;
 }
 
-.brand-logo { width: 34px; height: 34px; }
+.brand-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+}
 
 .brand-name {
   font-size: 1.25rem;
@@ -271,6 +273,8 @@ body { display: flex; flex-direction: column; }
   width: 96px;
   height: 96px;
   margin-bottom: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
 }
 
 .hero h1 {
