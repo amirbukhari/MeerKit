@@ -96,6 +96,7 @@ function renderTabs() {
     tabbar.appendChild(makeTab(t.id, t.icon, t.title));
   }
   syncSelected();
+  syncTabFade();
 }
 
 function makeTab(id, iconId, label) {
@@ -131,6 +132,11 @@ function renderHome() {
   grid.className = "card-grid";
   grid.id = "card-grid";
   panel.appendChild(grid);
+  panel.insertAdjacentHTML(
+    "beforeend",
+    `<footer class="site-foot">Standing lookout since 2026 ·
+       <a href="https://github.com/amirbukhari/MeerKit" target="_blank" rel="noopener">source</a></footer>`
+  );
   stage.appendChild(panel);
   panels.set("home", panel);
   renderCards();
@@ -225,10 +231,20 @@ function activate(id) {
 function syncSelected() {
   const id = currentRoute();
   for (const tab of tabbar.querySelectorAll(".tab")) {
-    if (tab.dataset.id === id) tab.setAttribute("aria-current", "page");
-    else tab.removeAttribute("aria-current");
+    if (tab.dataset.id === id) {
+      tab.setAttribute("aria-current", "page");
+      tab.scrollIntoView({ inline: "nearest", block: "nearest" });
+    } else tab.removeAttribute("aria-current");
   }
 }
+
+/* fade the tabbar's right edge only while there is more to scroll */
+function syncTabFade() {
+  const more = tabbar.scrollLeft + tabbar.clientWidth < tabbar.scrollWidth - 4;
+  tabbar.classList.toggle("has-more", more);
+}
+tabbar.addEventListener("scroll", syncTabFade, { passive: true });
+window.addEventListener("resize", syncTabFade);
 
 window.addEventListener("hashchange", () => activate(currentRoute()));
 
