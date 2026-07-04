@@ -206,6 +206,7 @@ body { display: flex; flex-direction: column; }
   color: var(--text);
   text-align: left;
   font: inherit;
+  text-decoration: none;
   cursor: pointer;
   transition: border-color 0.15s, transform 0.15s;
 }
