@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.png" alt="MeerKit logo — a meerkat mascot standing lookout" width="320" />
+</p>
+
 # MeerKit 🦫
 
 *Not AmirKit — **MeerKit**.* One lookout post for all of [Amir Bukhari's](https://github.com/amirbukhari) tools.
