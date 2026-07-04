@@ -184,7 +184,10 @@ function buildToolPanel(t) {
 
     const wrap = document.createElement("div");
     wrap.className = "frame-wrap";
-    wrap.innerHTML = `<div class="frame-loader" role="status" aria-label="Loading ${esc(t.title)}"><span class="spinner"></span>Loading ${esc(t.title)}…</div>`;
+    wrap.innerHTML = `<div class="frame-loader" role="status" aria-label="Loading ${esc(t.title)}">
+      <img class="loader-mascot" src="assets/logo-mark.png" alt="" width="56" height="56" />
+      <span>Standing lookout — loading ${esc(t.title)}…</span>
+    </div>`;
     const frame = document.createElement("iframe");
     frame.src = t.url;
     frame.title = t.title;
