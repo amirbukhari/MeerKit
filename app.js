@@ -3,46 +3,81 @@
  * Tools are listed below in CURATED order; on top of that, any repo on
  * github.com/amirbukhari that has GitHub Pages enabled is auto-discovered
  * at load time and appended, so new tools show up without touching this file.
+ *
+ * Tool fields:
+ *   id     unique slug (repo name for GitHub tools)
+ *   title  display name
+ *   icon   symbol id from the sprite in index.html (Lucide)
+ *   desc   one-line blurb
+ *   url    where the tool lives (defaults to the repo's GitHub Pages URL)
+ *   repo   GitHub repo URL, if it has one
+ *   embed  true → runs in an iframe tab; false → open-in-new-tab panel
+ *   note   shown on non-embeddable panels (why it can't be embedded)
  */
 
 const USER = "amirbukhari";
 const PAGES_HOST = `https://${USER}.github.io`;
 const EXCLUDE = new Set(["MeerKit", `${USER}.github.io`]);
 
-// Curated metadata. `live: true` → embeddable GitHub Pages app.
-// `live: false` → no web build; shows a card linking to the repo.
 const CURATED = [
   {
     id: "better-claude-cli-ui",
     title: "Claude CLI UI",
-    emoji: "🎛️",
-    live: true,
+    icon: "i-terminal",
+    embed: true,
     desc: "A two-pane web UI for Claude Code: live config dashboard, conversation browser and git view next to the real CLI.",
   },
   {
     id: "AgentLooper",
     title: "AgentLooper",
-    emoji: "🔁",
-    live: true,
+    icon: "i-repeat",
+    embed: true,
     desc: "AgentOS — autonomous spawner and workspace directory schedulers for looping agents.",
   },
   {
     id: "regia",
     title: "Regia Billing",
-    emoji: "🧾",
-    live: true,
+    icon: "i-receipt",
+    embed: true,
     desc: "delonix — an enterprise billing console demo. Invoices, payments, customers and credits, fully interactive in-browser.",
+  },
+  {
+    id: "synclair-mr-agent",
+    title: "Synclair Console",
+    icon: "i-bot",
+    embed: true,
+    url: "https://synclair-mr-agent.llws.workers.dev/",
+    desc: "Synclair & Renfrey operator console, running on Cloudflare Workers.",
+  },
+  {
+    id: "rentsync-cf-tunnels",
+    title: "CF Tunnels",
+    icon: "i-cloud",
+    embed: false,
+    url: "https://rentsync-cf-tunnels.pages.dev/",
+    desc: "Rentsync Cloudflare tunnels dashboard, deployed on Cloudflare Pages.",
+    note: "Protected by Cloudflare Access — sign-in can't run inside an embedded frame, so it opens in its own tab.",
+    lock: true,
   },
   {
     id: "lsdj-midi-studio",
     title: "LSDJ MIDI Studio",
-    emoji: "🎵",
-    live: false,
+    icon: "i-music",
+    embed: false,
+    url: `https://github.com/${USER}/lsdj-midi-studio`,
+    repo: `https://github.com/${USER}/lsdj-midi-studio`,
     desc: "MIDI → LSDj .lsdsng converter and editor toolkit for Game Boy music, built on a hardened pylsdj.",
+    note: "No web build (yet) — this one lives on GitHub.",
   },
 ];
 
-const tools = new Map(CURATED.map((t) => [t.id, t]));
+const tools = new Map();
+for (const t of CURATED) {
+  const external = !!t.url; // curated URL given → not a GitHub Pages tool
+  if (!t.url) t.url = `${PAGES_HOST}/${t.id}/`;
+  if (t.repo === undefined && !external) t.repo = `https://github.com/${USER}/${t.id}`;
+  tools.set(t.id, t);
+}
 
 const tabbar = document.getElementById("tabbar");
 const stage = document.getElementById("stage");
@@ -50,29 +85,25 @@ const panels = new Map();
 
 /* ---------- rendering ---------- */
 
-function toolUrl(t) {
-  return `${PAGES_HOST}/${t.id}/`;
-}
-function repoUrl(t) {
-  return `https://github.com/${USER}/${t.id}`;
+function icon(id, cls = "icon") {
+  return `<svg class="${cls}" aria-hidden="true"><use href="#${id}"></use></svg>`;
 }
 
 function renderTabs() {
   tabbar.innerHTML = "";
-  tabbar.appendChild(makeTab("home", "🦫", "Lookout"));
+  tabbar.appendChild(makeTab("home", "i-eye", "Lookout"));
   for (const t of tools.values()) {
-    tabbar.appendChild(makeTab(t.id, t.emoji, t.title));
+    tabbar.appendChild(makeTab(t.id, t.icon, t.title));
   }
   syncSelected();
 }
 
-function makeTab(id, emoji, label) {
+function makeTab(id, iconId, label) {
   const a = document.createElement("a");
   a.className = "tab";
   a.href = id === "home" ? "#/" : `#/${id}`;
   a.dataset.id = id;
-  a.setAttribute("role", "tab");
-  a.innerHTML = `<span>${emoji}</span><span>${esc(label)}</span>`;
+  a.innerHTML = `${icon(iconId)}<span>${esc(label)}</span>`;
   return a;
 }
 
@@ -105,6 +136,12 @@ function renderHome() {
   renderCards();
 }
 
+function badgeFor(t) {
+  if (t.embed) return `<span class="badge live">Live</span>`;
+  if (t.note && t.lock) return `<span class="badge">New tab</span>`;
+  return `<span class="badge muted">Repo</span>`;
+}
+
 function renderCards() {
   const grid = document.getElementById("card-grid");
   grid.innerHTML = "";
@@ -114,9 +151,9 @@ function renderCards() {
     card.href = `#/${t.id}`;
     card.innerHTML = `
       <div class="card-top">
-        <span class="card-emoji">${t.emoji}</span>
+        <span class="card-icon">${icon(t.icon)}</span>
         <h2>${esc(t.title)}</h2>
-        <span class="badge ${t.live ? "" : "repo"}">${t.live ? "Live" : "Repo"}</span>
+        ${badgeFor(t)}
       </div>
       <p>${esc(t.desc || "")}</p>
       ${t.pushed ? `<span class="card-meta">Updated ${t.pushed}</span>` : ""}`;
@@ -129,30 +166,37 @@ function buildToolPanel(t) {
   panel.className = "panel";
   panel.dataset.id = t.id;
 
-  if (t.live) {
+  if (t.embed) {
     const strip = document.createElement("div");
     strip.className = "tool-strip";
     strip.innerHTML = `
-      <span class="strip-title">${t.emoji} ${esc(t.title)}</span>
+      <span class="strip-title">${icon(t.icon)} ${esc(t.title)}</span>
       <span class="strip-desc">${esc(t.desc || "")}</span>
-      <a href="${toolUrl(t)}" target="_blank" rel="noopener">Open ↗</a>
-      <a href="${repoUrl(t)}" target="_blank" rel="noopener">Source</a>`;
+      <a href="${t.url}" target="_blank" rel="noopener">Open ${icon("i-external", "icon icon-sm")}</a>
+      ${t.repo ? `<a href="${t.repo}" target="_blank" rel="noopener">Source ${icon("i-code", "icon icon-sm")}</a>` : ""}`;
     panel.appendChild(strip);
 
+    const wrap = document.createElement("div");
+    wrap.className = "frame-wrap";
+    wrap.innerHTML = `<div class="frame-loader" role="status" aria-label="Loading ${esc(t.title)}"><span class="spinner"></span>Loading ${esc(t.title)}…</div>`;
     const frame = document.createElement("iframe");
-    frame.src = toolUrl(t);
+    frame.src = t.url;
     frame.title = t.title;
     frame.loading = "lazy";
-    panel.appendChild(frame);
+    frame.addEventListener("load", () => wrap.classList.add("loaded"));
+    wrap.appendChild(frame);
+    panel.appendChild(wrap);
   } else {
     panel.classList.add("repo-panel");
     panel.innerHTML = `
       <div class="repo-box">
-        <div class="repo-emoji">${t.emoji}</div>
+        <span class="repo-icon">${icon(t.lock ? "i-lock" : t.icon, "icon icon-xl")}</span>
         <h2>${esc(t.title)}</h2>
         <p>${esc(t.desc || "")}</p>
-        <p>This one doesn't have a web build (yet) — it lives on GitHub.</p>
-        <a class="btn" href="${repoUrl(t)}" target="_blank" rel="noopener">View on GitHub ↗</a>
+        <p class="repo-note">${esc(t.note || "")}</p>
+        <a class="btn" href="${t.url}" target="_blank" rel="noopener">
+          ${t.repo && t.url === t.repo ? "View on GitHub" : "Open in new tab"} ${icon("i-external", "icon icon-sm")}
+        </a>
       </div>`;
   }
 
@@ -181,7 +225,8 @@ function activate(id) {
 function syncSelected() {
   const id = currentRoute();
   for (const tab of tabbar.querySelectorAll(".tab")) {
-    tab.setAttribute("aria-selected", tab.dataset.id === id ? "true" : "false");
+    if (tab.dataset.id === id) tab.setAttribute("aria-current", "page");
+    else tab.removeAttribute("aria-current");
   }
 }
 
@@ -209,8 +254,10 @@ async function discover() {
         tools.set(r.name, {
           id: r.name,
           title: r.name,
-          emoji: "🛠️",
-          live: true,
+          icon: "i-wrench",
+          embed: true,
+          url: `${PAGES_HOST}/${r.name}/`,
+          repo: r.html_url,
           desc: r.description || "",
           pushed: r.pushed_at.slice(0, 10),
         });

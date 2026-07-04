@@ -6,16 +6,20 @@
 
 ## What it is
 
-A zero-build static site (plain HTML/CSS/JS) that hosts every tool in one place, with a tab for each. Tools that have a GitHub Pages build run **embedded right inside the app**; tools without a web build get a card linking to their repo.
+A zero-build static site (plain HTML/CSS/JS) that hosts every tool in one place, with a tab for each. Tools that allow embedding run **inside the app in an iframe**; tools that can't be framed (auth walls, no web build) get an open-in-new-tab panel.
+
+Design follows the [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) dark developer-tool profile: OLED-deep warm palette, Inter, Lucide SVG icons (no emoji-as-icons), WCAG-AA-verified contrast, visible focus rings, 44px touch targets, `prefers-reduced-motion` support, and loading feedback on embeds.
 
 Current lineup:
 
-| Tab | Repo | How it's shown |
+| Tab | Where it lives | How it's shown |
 |---|---|---|
-| 🎛️ Claude CLI UI | [better-claude-cli-ui](https://github.com/amirbukhari/better-claude-cli-ui) | embedded |
-| 🔁 AgentLooper | [AgentLooper](https://github.com/amirbukhari/AgentLooper) | embedded |
-| 🧾 Regia Billing | [regia](https://github.com/amirbukhari/regia) | embedded |
-| 🎵 LSDJ MIDI Studio | [lsdj-midi-studio](https://github.com/amirbukhari/lsdj-midi-studio) | repo card |
+| Claude CLI UI | [better-claude-cli-ui](https://github.com/amirbukhari/better-claude-cli-ui) | embedded |
+| AgentLooper | [AgentLooper](https://github.com/amirbukhari/AgentLooper) | embedded |
+| Regia Billing | [regia](https://github.com/amirbukhari/regia) | embedded |
+| Synclair Console | [synclair-mr-agent.llws.workers.dev](https://synclair-mr-agent.llws.workers.dev/) | embedded |
+| CF Tunnels | [rentsync-cf-tunnels.pages.dev](https://rentsync-cf-tunnels.pages.dev/) | new-tab panel (Cloudflare Access blocks framing) |
+| LSDJ MIDI Studio | [lsdj-midi-studio](https://github.com/amirbukhari/lsdj-midi-studio) | repo panel |
 
 ## Adding a tool
 

@@ -5,12 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MeerKit — Amir's tool lookout</title>
   <meta name="description" content="MeerKit: one lookout post for all of Amir Bukhari's tools." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='52' font-size='52'>🦫</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M20 58 C 12 56, 8 48, 10 38' fill='none' stroke='%23d9a867' stroke-width='4' stroke-linecap='round'/%3E%3Crect x='22' y='24' width='20' height='36' rx='10' fill='%23d9a867'/%3E%3Cellipse cx='32' cy='44' rx='7' ry='12' fill='%23f0d9b5'/%3E%3Ccircle cx='22' cy='10' r='3.5' fill='%23d9a867'/%3E%3Ccircle cx='42' cy='10' r='3.5' fill='%23d9a867'/%3E%3Ccircle cx='32' cy='13' r='10' fill='%23d9a867'/%3E%3Cellipse cx='27.5' cy='11.5' rx='3.2' ry='4' fill='%234a3222'/%3E%3Cellipse cx='36.5' cy='11.5' rx='3.2' ry='4' fill='%234a3222'/%3E%3Cpath d='M32 16.5 l-2 2.2 h4 z' fill='%234a3222'/%3E%3C/svg%3E" />
 </head>
 <body>
+  <a class="skip-link" href="#stage">Skip to content</a>
+
+  <!-- icon sprite (Lucide, stroke-based) -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></symbol>
+    <symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></symbol>
+    <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></symbol>
+    <symbol id="i-bot" viewBox="0 0 24 24"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+  </svg>
+
   <header class="topbar">
-    <a class="brand" href="#/">
+    <a class="brand" href="#/" aria-label="MeerKit home">
       <svg class="brand-logo" viewBox="0 0 64 64" aria-hidden="true">
         <!-- meerkat -->
         <path class="mk-tail" d="M20 58 C 12 56, 8 48, 10 38" fill="none" stroke="var(--mk-fur)" stroke-width="4" stroke-linecap="round"/>
@@ -28,8 +48,8 @@
       </svg>
       <span class="brand-name">Meer<em>Kit</em></span>
     </a>
-    <nav class="tabbar" id="tabbar" role="tablist" aria-label="Tools"></nav>
-    <a class="gh-link" href="https://github.com/amirbukhari" target="_blank" rel="noopener" title="github.com/amirbukhari">
+    <nav class="tabbar" id="tabbar" aria-label="Tools"></nav>
+    <a class="gh-link" href="https://github.com/amirbukhari" target="_blank" rel="noopener" aria-label="Amir's GitHub profile">
       <svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
     </a>
   </header>
