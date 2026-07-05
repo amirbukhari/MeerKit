@@ -236,7 +236,16 @@ function syncSelected() {
   for (const tab of tabbar.querySelectorAll(".tab")) {
     if (tab.dataset.id === id) {
       tab.setAttribute("aria-current", "page");
-      tab.scrollIntoView({ inline: "nearest", block: "nearest" });
+      // Only scroll when the tab is actually off-screen. Chromium resets the
+      // keyboard sequential-focus starting point whenever scrollIntoView() runs,
+      // even as a no-op — calling it unconditionally on every load/route change
+      // hijacks Tab navigation, making the very first Tab press jump into the
+      // tabbar and skip the skip-link, brand link, and home tab entirely.
+      const tabRect = tab.getBoundingClientRect();
+      const barRect = tabbar.getBoundingClientRect();
+      if (tabRect.left < barRect.left || tabRect.right > barRect.right) {
+        tab.scrollIntoView({ inline: "nearest", block: "nearest" });
+      }
     } else tab.removeAttribute("aria-current");
   }
 }
