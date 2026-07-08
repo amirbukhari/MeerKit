@@ -24,6 +24,9 @@ Current lineup:
 | Synclair Console | [synclair-mr-agent.llws.workers.dev](https://synclair-mr-agent.llws.workers.dev/) | embedded |
 | CF Tunnels | [rentsync-cf-tunnels.pages.dev](https://rentsync-cf-tunnels.pages.dev/) | new-tab panel (Cloudflare Access blocks framing) |
 | LSDJ MIDI Studio | [lsdj-midi-studio](https://github.com/amirbukhari/lsdj-midi-studio) | repo panel |
+| D'Cruz Guitars | [dcruz](https://github.com/amirbukhari/dcruz) | embedded |
+| PRD Scrutinizer | [PRDScrutinizer](https://github.com/amirbukhari/PRDScrutinizer) | repo panel |
+| Project Meterfall | [RhythmRPG](https://github.com/amirbukhari/RhythmRPG) | repo panel |
 
 ## Adding a tool
 

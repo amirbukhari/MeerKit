@@ -69,6 +69,33 @@ const CURATED = [
     desc: "MIDI → LSDj .lsdsng converter and editor toolkit for Game Boy music, built on a hardened pylsdj.",
     note: "No web build (yet) — this one lives on GitHub.",
   },
+  {
+    id: "dcruz",
+    title: "D'Cruz Guitars",
+    icon: "i-guitar",
+    embed: true,
+    desc: "Marketing site for D'Cruz Guitars — custom electric guitars and partscasters, hand-wired in Belleville, Ontario.",
+  },
+  {
+    id: "PRDScrutinizer",
+    title: "PRD Scrutinizer",
+    icon: "i-clipboard-check",
+    embed: false,
+    url: `https://github.com/${USER}/PRDScrutinizer`,
+    repo: `https://github.com/${USER}/PRDScrutinizer`,
+    desc: "Claude Code plugin that scrutinizes a PRD and iteratively refines it until a deterministic confidence score clears 95%.",
+    note: "A Claude Code plugin, not a web app — installs via /plugin marketplace add.",
+  },
+  {
+    id: "RhythmRPG",
+    title: "Project Meterfall",
+    icon: "i-gamepad",
+    embed: false,
+    url: `https://github.com/${USER}/RhythmRPG`,
+    repo: `https://github.com/${USER}/RhythmRPG`,
+    desc: "A single-player, browser-based, pixel-art rhythm RPG — combat as timed phrases against an authored musical track.",
+    note: "Early production — no build deployed yet.",
+  },
 ];
 
 const tools = new Map();
